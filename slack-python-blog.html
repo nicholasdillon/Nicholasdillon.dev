@@ -1,0 +1,149 @@
+<!DOCTYPE html><html data-bs-theme="light"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no"><title>Project Page - Brand</title><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93"><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93"><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93" media="(prefers-color-scheme: dark)"><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93"><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93"><link rel="icon" type="image/png" sizes="500x500" href="/assets/img/download%20(2).png?h=4a703d3ec76de0eb539cd8c6b2fbcd93"><link rel="stylesheet" href="/assets/bootstrap/css/bootstrap.min.css?h=f394056d9bbad6d73d2c2a22953aaf59"><link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.12.0/css/all.css"><link rel="stylesheet" href="/assets/css/styles.min.css?h=c3a6f15f6f7a75d09aaee379f93f9f11"></head><body><nav class="navbar navbar-expand-lg fixed-top portfolio-navbar gradient navbar-dark mt-0 pt-0 pb-0 mb-4"><div class="container"><a class="navbar-brand logo pb-4 mb-0 me-4 pe-0 pt-0 ps-0" href="/index.html" style="font-size: 16px;"><br><strong><span style="color: var(--bs-nav-link-hover-color);">Home</span></strong></a><div class="collapse navbar-collapse" id="navbarNav" style="height: 50px;"><ul class="navbar-nav ms-auto"><li class="nav-item"><a class="nav-link" href="/projects.html">Projects</a></li><li class="nav-item"><a class="nav-link" href="/cv.html">CV</a></li><li class="nav-item"><a class="nav-link" href="/contact.html">Contact me</a></li><li class="nav-item"><a class="nav-link" href="/Blog.html">Blog</a></li><li class="nav-item"></li></ul></div></div></nav><main class="page project-page"><section class="portfolio-block project"><div class="container"><!-- Start: portfolio heading --><div class="heading"><h2>Linode Slack Integration with Python</h2></div><!-- End: portfolio heading --><div class="image" style="background-image:url(&quot;/assets/img/tech/image4.jpg?h=e138a8bfe4ed72819d3bbf626d732745&quot;);"><img src="/assets/img/clipboard-image.png?h=05accd72ae8888aaeffc037e9a85b7fe" width="1298" height="459"></div><div class="row"><div class="col-12 col-md-6 col-xxl-7 offset-md-1 info"><head>
+    <meta charset="UTF-8">
+    <title>Linode Slack Integration</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            margin: 20px;
+            background-color: #f4f4f4;
+            color: #333;
+        }
+        h1, h2, h3 {
+            color: #007bff;
+        }
+        pre {
+            background: #f4f4f4;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        a {
+            color: #007bff;
+            text-decoration: none;
+        }
+        a:hover {
+            text-decoration: underline;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container">
+    <p>Integrating Linode's API with Slack can streamline the process of managing and monitoring support tickets. In this post, we’ll walk through the prerequisites and functionality of a Python script that fetches open support tickets from Linode and posts updates to a specified Slack channel. This script utilizes the <code>requests</code> library to interact with the Linode API and the <code>slack_sdk</code> library to communicate with Slack.</p>
+
+    <h2>Prerequisites</h2>
+    <p>Before diving into the script, ensure you have the following:</p>
+    <h3>Slack Bot Token:</h3>
+    <ul>
+        <li>Obtain a Slack Bot Token by creating a new Slack App and installing it in your workspace. This token is used to authenticate the script with Slack.</li>
+    </ul>
+    <h3>Linode API Token:</h3>
+    <ul>
+        <li>Generate a Linode API token with the necessary permissions to access support ticket information. Ensure that the token has the <code>support:read_write</code> scope.</li>
+    </ul>
+    <h3>Python Dependencies:</h3>
+    <ul>
+        <li>Install the required Python packages using the following command:</li>
+    </ul>
+    <pre><code>pip install requests slack-sdk schedule</code></pre>
+
+    <h2>Setting Up Your Slack Bot</h2>
+    <p>To set up your Slack bot, follow the guide <a href="https://kubiya.ai/blog/how-to-build-a-slackbot-with-python" target="_blank">How to Build a Slackbot with Python | kubiya.ai</a>. This guide will walk you through the steps of creating a Slack App, configuring permissions, and obtaining your Slack Bot Token.</p>
+
+    <h2>Script Functionality</h2>
+    <p>The <code>SlackBotAPI.py</code> script is designed to:</p>
+    <ul>
+        <li>Fetch support tickets from the Linode API using the provided API token.</li>
+        <li>Filter the tickets to include only those with an "open" status.</li>
+        <li>For each open ticket, post a message to the specified Slack channel with information about the ticket, including a clickable URL to view the ticket details.</li>
+        <li>If there are no open tickets, post a message indicating that there are none.</li>
+        <li>Handle cases where the Slack API token is invalid and print appropriate error messages.</li>
+    </ul>
+
+    <h2>Scheduling</h2>
+    <p>The script is configured to execute the function immediately and then run every hour thereafter:</p>
+    <ul>
+        <li>The initial execution fetches and posts ticket information immediately.</li>
+        <li>Subsequent executions occur every hour, ensuring up-to-date information is posted to the specified Slack channel.</li>
+    </ul>
+
+    <h2>Notes</h2>
+    <ul>
+        <li>Ensure that the Slack channel specified in <code>channel="#tickets"</code> exists in your workspace.</li>
+    </ul>
+
+    <h2>Troubleshooting</h2>
+    <ul>
+        <li>If you encounter issues, check the error messages printed to the console for information on what went wrong. Verify that your API tokens are correct and have the necessary permissions.</li>
+    </ul>
+
+    <p>For more details and to access the full script, visit my <a href="https://github.com/nicholasdillon/Slack-Ticket-Bot" target="_blank">GitHub repository</a>.</p>
+</div>
+
+</body><p></p><p></p></div><div class="col-12 col-md-3 offset-md-1 meta"><div class="tags"><span class="meta-heading">Author</span><a>Nicholas Dillon</a><a href="#"></a><span class="meta-heading">Date</span><span>06-03-2024</span></div></div></div></div></section></main><footer class="page-footer py-3 border-top"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Footer Layout</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css">
+    <style>
+        .container {
+            text-align: center;
+            margin: 20px auto;
+        }
+        .links a {
+            margin: 0 15px;
+            text-decoration: none;
+            color: #000;
+        }
+        .social-icons, .buy-me-pizza {
+            display: inline-block;
+            vertical-align: middle;
+        }
+        .social-icons a {
+            margin: 0 10px;
+        }
+        .footer-content {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 20px;
+            margin-top: 20px;
+        }
+        .footer-content img {
+            vertical-align: middle;
+        }
+        .footer-content a {
+            color: #000;
+            text-decoration: none;
+        }
+    </style>
+</head>
+<body>
+
+<div class="container my-4">
+    <div class="links">
+        <a href="/index.html">About me</a>
+        <a href="/contact.html">Contact me</a>
+        <a href="/projects.html">Projects</a>
+    </div>
+    <div class="footer-content">
+        <div class="social-icons">
+            <a class="me-3" href="https://www.linkedin.com/in/nick67005/">
+                <i class="fab fa-linkedin"></i>
+            </a>
+            <a class="me-3" href="https://github.com/nicholasdillon">
+                <i class="fab fa-github"></i>
+            </a>
+        </div>
+        <div class="buy-me-pizza">
+            <a href="https://www.buymeacoffee.com/nicholasdillon">
+                <img src="https://img.buymeacoffee.com/button-api/?text=Buy me a pizza&emoji=🍕&slug=nicholasdillon&button_colour=5F7FFF&font_colour=ffffff&font_family=Poppins&outline_colour=000000&coffee_colour=FFDD00" />
+            </a>
+        </div>
+    </div>
+    <br>
+    <a>Copyright © Nicholas Dillon 2024</a>
+</div>
+
+</body></footer><script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script><script src="/assets/js/script.min.js?h=8f2950253cc49508fb3352618a979f35"></script></body></html>
